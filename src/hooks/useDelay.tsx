@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
 
-interface delayValue {
-  value: string,
-  delay: number
-}
-
 function  useDelay<T>(value: T, delay: number): T  {
   const [delayedValue, setDelayedValue] = useState(value)
 

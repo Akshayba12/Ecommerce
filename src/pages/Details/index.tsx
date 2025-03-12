@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../services/axiosinstance";
 import { useEffect} from "react";
@@ -11,8 +12,8 @@ import { setCart, setOpen } from "../../Redux/cart/cartReducer";
 const Details = () => {
     const {id} = useParams();
     const dispatch = useDispatch()
-    const {product, isLoading} = useSelector(state =>  state.product)
-    const {cart} =  useSelector(state => state.cart)
+    const {product, isLoading} = useSelector((state: any) =>  state.product)
+    const {cart} =  useSelector((state: any) => state.cart)
 
     const GetProductById = async() => {
         try {
@@ -27,7 +28,7 @@ const Details = () => {
         GetProductById()
     },[])
 
-    const handleNavigateToCart = (data) => {
+    const handleNavigateToCart = (data:any) => {
       dispatch(setOpen(true))
       dispatch(setCart([data]))
     }
@@ -44,7 +45,7 @@ const Details = () => {
     return (
         <div>
          <Cart />
-        {product.map((x) => {
+        {product.map((x:any) => {
           return (
             <>
             <div key={x.id} className="product-container">
@@ -83,7 +84,7 @@ const Details = () => {
                         </Typography>
                       </Box>
                 </div>
-                {cart.some(product => product.id === x.id) ? (
+                {cart.some((product: any) => product.id === x.id) ? (
                    <button className="button" onClick={() => dispatch(setOpen(true))}>View Cart</button>
                 ) : (<button className="button" onClick={() => handleNavigateToCart(x)}>Add to Cart</button>)}
                 </div>
@@ -94,7 +95,7 @@ const Details = () => {
               {x.reviews && x.reviews.length > 0 && (
                 <div className="reviews-section">
                   <h3 style={{margin:5}}>Reviews</h3>
-                  {x.reviews.map((review) => (
+                  {x.reviews.map((review: any) => (
                     <Card key={review._id} sx={{ marginBottom: 2, backgroundColor:'Menu' }}>
                     <CardContent>
                       {/* Reviewer Profile Thumbnail */}

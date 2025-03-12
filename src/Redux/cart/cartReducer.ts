@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit"
 
 const initialState = {
@@ -9,10 +10,10 @@ const cartSlice = createSlice({
     name: 'cart',
     initialState,
     reducers: {
-        setCart : (state, action) =>{
+        setCart : (state: any, action) =>{
          const newItem = action.payload
-          newItem.forEach(item => {
-            const index = state.cart.findIndex(cartItem => cartItem.id === item.id)
+          newItem.forEach((item: any) => {
+            const index = state.cart.findIndex((cartItem: any) => cartItem.id === item.id)
             if(index > 0){
                 state.cart[index].quantity += 1; 
             }
@@ -21,16 +22,16 @@ const cartSlice = createSlice({
             }
           })
         },
-        addQuantity: (state, action) => {
+        addQuantity: (state:any, action) => {
             const itemId = action.payload
-            const index = state.cart.findIndex((item) => item.id === itemId)
+            const index = state.cart.findIndex((item: any) => item.id === itemId)
             if(index >= 0){
                 state.cart[index].quantity += 1;
             }
         },
-        removeQuantity: (state, action) => {
+        removeQuantity: (state: any, action) => {
             const itemId = action.payload;
-            const index = state.cart.findIndex(item => item.id === itemId);
+            const index = state.cart.findIndex((item: any) => item.id === itemId);
       
             if (index >= 0 && state.cart[index].quantity > 1) {
               state.cart[index].quantity -= 1;
@@ -39,8 +40,8 @@ const cartSlice = createSlice({
         setOpen: (state, action) => {
          state.isOpen = action.payload
         },
-        removeItemFromCart: (state, action) => {
-           state.cart = state.cart.filter(item => item.id!==action.payload)
+        removeItemFromCart: (state: any, action) => {
+           state.cart = state.cart.filter((item: any) => item.id!==action.payload)
         }
     }
 })

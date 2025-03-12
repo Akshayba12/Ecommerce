@@ -1,30 +1,32 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Box, Card, Drawer, Typography } from "@mui/material"
 import { useDispatch, useSelector } from "react-redux"
-import { addQuantity, removeItemFromCart, removeQuantity, setCart, setOpen } from "../../Redux/cart/cartReducer"
+import { addQuantity, removeItemFromCart, removeQuantity, setOpen } from "../../Redux/cart/cartReducer"
 import { ShoppingCart } from "@mui/icons-material"
 import { useNavigate } from "react-router-dom"
+import { Key, ReactElement, JSXElementConstructor, ReactNode, ReactPortal } from "react"
 
 const Cart = () => {
 
-  const {cart, isOpen} =  useSelector(state => state.cart)
+  const {cart, isOpen} =  useSelector((state: any) => state.cart)
 
   const dispatch = useDispatch()
   const navigation = useNavigate()
 
-  const handleRemoveItem = (productId) =>{
+  const handleRemoveItem = (productId: any) =>{
     dispatch(removeItemFromCart(productId))
 
   }
 
-  const handleAddQuantity = (id) =>{
+  const handleAddQuantity = (id: any) =>{
     dispatch(addQuantity(id))
   }
 
-  const handleRemoveQuantityItem = (id) =>{
+  const handleRemoveQuantityItem = (id: any) =>{
     dispatch(removeQuantity(id))
   }
 
-  const handleNavigatetoDetails = (id) => {
+  const handleNavigatetoDetails = (id: any) => {
     navigation(`/Details/${id}`)  
   }
 
@@ -52,11 +54,11 @@ const Cart = () => {
       }}>
         {cart.length === 0 ? (
           <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <ShoppingCart role="button" color="white" sx={{ fontSize: 160, alignSelf: 'center', paddingRight: 2 }} />
+            <ShoppingCart role="button" sx={{ color:"#00000", fontSize: 160, alignSelf: 'center', paddingRight: 2 }} />
             <p>Your have no items in your Shopping cart.</p>
           </div>
         ) : (
-          cart.map((x, index) => (
+          cart.map((x: { id: Key | null | undefined; thumbnail: string | undefined; title: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined; quantity: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined; price: string | number | boolean | ReactElement<any, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | null | undefined }, index: number) => (
             <div key={x.id} style={{
               display: 'flex',
               flexDirection: 'row',
@@ -101,7 +103,7 @@ const Cart = () => {
         }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="body1">Subtotal</Typography>
-            <Typography variant="body1">${cart.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)}</Typography>
+            <Typography variant="body1">${cart.reduce((total: number, item: { price: number; quantity: number }) => total + item.price * item.quantity, 0).toFixed(2)}</Typography>
           </div>
           <button style={{ width: '100%', background: 'linear-gradient(0deg, #004152, #004152)'
                  , color: 'white', padding: '10px', marginTop: '10px' }}>

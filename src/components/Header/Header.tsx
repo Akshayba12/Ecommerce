@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOpen, SearchOff, ShoppingCart } from '@mui/icons-material';
-import { alpha, AppBar, Avatar, Box, Button, Container, Icon, IconButton, InputBase, Menu, MenuItem, styled, Toolbar, Tooltip, Typography } from '@mui/material'
+import { alpha, AppBar, Box, Button, Container, InputBase, Menu, MenuItem, styled, Toolbar, Typography } from '@mui/material'
 import { useEffect, useState } from 'react';
 import useDelay from '../../hooks/useDelay';
-import { CatergoriesProducts, searchProducts, setError, setLoading, setProducts } from '../../Redux/product/productsReducer';
+import { CatergoriesProducts, setError, setProducts } from '../../Redux/product/productsReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import axiosInstance from '../../services/axiosinstance';
 import { setOpen } from '../../Redux/cart/cartReducer';
+import { AppDispatch } from '../../Redux/Store';
 
 const pages = ['Products', 'Category', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 const categories = ["All", "Groceries", "Beauty", "Fragrances", "Furniture", 'Mens clothing', 'jewelery', 'electronics', 'Womens clothing']
 
 
@@ -59,7 +60,7 @@ const Header = ({toggleDrawer}: any) => {
   
   const [anchorElCategory, setAnchorElCategory] = useState(null);
   const [query, setQuery] = useState('') 
-  const [prodcutcategory] = useState({
+  const [prodcutcategory] = useState<any>({
     "All": "All",
     "Groceries": "groceries",
     "Beauty": "beauty",
@@ -71,15 +72,15 @@ const Header = ({toggleDrawer}: any) => {
     "Womens clothing": "women's clothing"
   }
 )
-     const dispatch = useDispatch() 
-     const {isOpen} = useSelector(state => state.cart)
+     const dispatch = useDispatch<AppDispatch>() 
+     const {isOpen} = useSelector((state:any) => state.cart)
   const delayedSearchTerm  = useDelay(query, 500)
 
-  const handleOpenCategoryMenu = (event) => {
+  const handleOpenCategoryMenu = (event:any) => {
     setAnchorElCategory(event.currentTarget);
   };
 
-  const handleCloseCategoryMenu = (category) => {
+  const handleCloseCategoryMenu = (category:any) => {
   setAnchorElCategory(null);
 
   if (category && category.trim() !== '') {
@@ -94,13 +95,13 @@ const Header = ({toggleDrawer}: any) => {
    console.log("isOpen", isOpen)
 
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
      e.preventDefault()
      setQuery(e.target.value)
 
   }
 
-  const fetchProducts = async (searchTerm) =>{
+  const fetchProducts = async (searchTerm:any) =>{
     try{
       const response = await axiosInstance(`/api/products/search?name=${searchTerm}`)
       console.log("response" , response)
@@ -108,7 +109,7 @@ const Header = ({toggleDrawer}: any) => {
          dispatch(setProducts(response.data.flat()))
          dispatch(setError(null))
        }
-      } catch(err){
+      } catch(err:any){
         dispatch(setError(err.response.data?.message))
       console.log("error" , err.response.data.message)
     }
@@ -169,7 +170,7 @@ const Header = ({toggleDrawer}: any) => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={page === "Category" ? handleOpenCategoryMenu : {}}
+                onClick={page === "Category" ? handleOpenCategoryMenu : () => {}}
                 sx={{ my: 2, color: 'white', display: 'block', border:'none' }}
               >
                 {page}
@@ -210,7 +211,7 @@ const Header = ({toggleDrawer}: any) => {
               inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
-            <ShoppingCart onClick={handleDispatch} role="button" color="white" fontSize='large' sx={{alignSelf:'center', paddingRight:2, cursor:'pointer'}} />
+            <ShoppingCart onClick={handleDispatch} role="button" fontSize='large' sx={{alignSelf:'center', paddingRight:2, cursor:'pointer', color:"white"}} />
           </Box>
         </Toolbar>
       </Container>

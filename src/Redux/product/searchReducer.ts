@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../services/axiosinstance";
 
@@ -7,8 +8,8 @@ export const searchProducts = createAsyncThunk(
       try {
         const response = await axiosInstance(`/api/products/search?name=${searchTerm}`);  // Search products
         return response.data.flat();  // Return search results
-      } catch (error) {
-        return rejectWithValue(error.message || 'An error occurred while searching for products');
+      } catch (error: any) {
+        return rejectWithValue(error?.message || 'An error occurred while searching for products');
       }
     }
   );
@@ -33,7 +34,7 @@ const searchProductSlice = createSlice({
             state.products = action.payload;
             state.error = null;
           })
-          .addCase(searchProducts.rejected, (state, action) => {
+          .addCase(searchProducts.rejected, (state:any, action) => {
             state.isLoading = false;
             state.error = action.payload;
           });
