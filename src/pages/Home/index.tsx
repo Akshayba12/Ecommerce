@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useCallback, useEffect, useState } from "react"
 import Header from "../../components/Header/Header"
 import {Box, Card, CardActionArea, CardContent, CircularProgress, Grid, Rating, Typography } from "@mui/material"
@@ -6,13 +7,14 @@ import { Navigate, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { CatergoriesProducts, fetchAllProducts } from "../../Redux/product/productsReducer"
 import Cart from "../Cart/Cart"
+import { AppDispatch } from "../../Redux/Store"
 
 const Home = () => {
 
   const navigation = useNavigate()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
-  const {products, isLoading, error} = useSelector(state => state.product)
+  const {products, isLoading, error} = useSelector((state:any) => state.product)
 
    const [open, setOpen] = useState(false);
    const [user, setUser] = useState(() => localStorage.getItem("userData"))
@@ -21,7 +23,7 @@ const Home = () => {
       setOpen(newOpen);
     },[]);
 
-  const handleNavigate = (id) => {
+  const handleNavigate = (id:any) => {
     navigation(`/Details/${id}`)
   }
 
@@ -61,7 +63,7 @@ const Home = () => {
     <div style={{ height: '500px', overflow: 'auto', margin: 12, padding: 10 }}>
       {error ? 
       <p>{error}</p> : <Grid container spacing={3} justifyContent="center">
-        {products?.map((x) => (
+        {products?.map((x:any) => (
           <Grid item xs={12} sm={6} md={5} lg={3} key={x.id}>
             <Card onClick={() => handleNavigate(x.id)} sx={{ maxWidth: 300, borderRadius:5, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
               <CardActionArea>

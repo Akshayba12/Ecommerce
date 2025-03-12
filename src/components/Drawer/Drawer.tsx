@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -20,7 +21,7 @@ export default function SideDrawer({open, toggleDrawer, setUser} : any) {
      setUser(null)
   }
 // 
-  const handleSideDrawer = (item) =>{
+  const handleSideDrawer = (item: any) =>{
      switch(item){
       case 'Home':
         navigation("/Home")

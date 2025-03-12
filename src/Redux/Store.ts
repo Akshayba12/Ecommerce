@@ -5,7 +5,7 @@ import searchProductsReducer from "./product/searchReducer.ts";
 import cartReducer from './cart/cartReducer.ts'
 
 
-export const store = configureStore({
+const store = configureStore({
     reducer: {
         user: userReducer,
         cart: cartReducer,
@@ -13,3 +13,6 @@ export const store = configureStore({
         searchProduct: searchProductsReducer
     }
 })
+
+export type AppDispatch = typeof store.dispatch;
+export default store;

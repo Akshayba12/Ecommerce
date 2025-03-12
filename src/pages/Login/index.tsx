@@ -1,9 +1,21 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Alert, Box, Button, Checkbox, CircularProgress, Container, Divider, FormControl, FormControlLabel, FormLabel, Paper, Snackbar, TextField, Typography } from "@mui/material"
-import { Formik, replace } from "formik";
+import { Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { FacebookIcon, GoogleIcon } from "../../components/CustomIcons/CustomIcons";
 import axiosInstance from "../../services/axiosinstance";
 import { useState } from "react";
+
+interface FormValues {
+  email: string;
+  Password: string;
+}
+
+interface FormErrors {
+  email?: string;
+  Password?: string;
+}
+
 
 const Login = () => {
 
@@ -12,7 +24,7 @@ const Login = () => {
   const [isError, setIsError] = useState(false)
   const [open, setOpen] = useState(false)
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
         try {
           const res = await axiosInstance.post('/api/user/login', values)
           const users = res.data.email
@@ -26,7 +38,7 @@ const Login = () => {
             resetForm();
             navigate('/Home', {replace: true});
           }, 2000);
-        } catch (error) {
+        } catch (error: any) {
           setErrorMessage(error?.response?.data.message);
           setSubmitting(false);
           setIsError(true)
@@ -76,8 +88,8 @@ const Login = () => {
           </Typography>
         <Formik
          initialValues={{email : '',Password: ''}}
-         validate={(values) => {
-          const errors = {}
+         validate={(values: FormValues) => {
+          const errors: FormErrors  = {}
            if(!values.email){
             errors.email = "Required"
            }
@@ -140,9 +152,9 @@ const Login = () => {
                   disabled={isSubmitting}
                 >{isSubmitting ? <CircularProgress size={24} /> : 'Sign in'}</Button>
                 <Link
-                  component="button"
+                  to="/auth"
                   type="button"
-                  variant="body2">
+                  >
                     <Typography textAlign="center">
                   Forgot your password?
                     </Typography>
@@ -167,9 +179,7 @@ const Login = () => {
                     Don&apos;t have an account?{' '}
                     <Link
                       to="register"
-                      component="button"
                       type="button"
-                      varient="body2"
                     >
                       Sign Up
                     </Link>
