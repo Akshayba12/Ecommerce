@@ -1,9 +1,15 @@
-import { Alert, Box, Button, Checkbox, CircularProgress, Container, Divider, FormControl, FormControlLabel, FormLabel, Paper, Snackbar, TextField, Typography } from "@mui/material"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Alert, Box, Button, CircularProgress, Container, Divider, FormControl, FormLabel, Paper, Snackbar, TextField, Typography } from "@mui/material"
 import { Formik } from "formik"
 import { Link, useNavigate } from "react-router-dom"
 import { FacebookIcon, GoogleIcon } from "../../components/CustomIcons/CustomIcons"
 import axiosInstance from "../../services/axiosinstance"
 import { useState } from "react"
+interface FormErrors {
+  name?: string;
+  email?: string;
+  Password?: string;
+}
 
 const Register = () => {
 
@@ -55,7 +61,7 @@ const Register = () => {
         <Formik
          initialValues={{name: '',email : '',Password: ''}}
          validate={(values) => {
-          const errors = {}
+          const errors: FormErrors = {}
           if(!values.name){
             errors.name = "Required"
            }
@@ -72,7 +78,7 @@ const Register = () => {
          }}
          onSubmit={(values, { setSubmitting, resetForm }) => {
           axiosInstance.get('/getAllUser').then((val) =>{
-            const userExists = val.data.some((user) => user.email === values.email)
+            const userExists = val.data.some((user: any) => user.email === values.email)
             if(userExists){
               setErrorMessage("email already exists")
               setIsError(true)
@@ -173,9 +179,7 @@ const Register = () => {
                     Already, have an account?{' '}
                     <Link
                       to="/auth"
-                      component="button"
                       type="button"
-                      varient="body2"
                     >
                       Sign In
                     </Link>
