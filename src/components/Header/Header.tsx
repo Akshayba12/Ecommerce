@@ -4,7 +4,7 @@ import { alpha, AppBar, Box, Button, Container, InputBase, Menu, MenuItem, style
 import { useEffect, useState } from 'react';
 import useDelay from '../../hooks/useDelay';
 import { CatergoriesProducts, setError, setProducts } from '../../Redux/product/productsReducer';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axiosInstance from '../../services/axiosinstance';
 import { setOpen } from '../../Redux/cart/cartReducer';
 import { AppDispatch } from '../../Redux/Store';
@@ -73,7 +73,7 @@ const Header = ({toggleDrawer}: any) => {
   }
 )
      const dispatch = useDispatch<AppDispatch>() 
-     const {isOpen} = useSelector((state:any) => state.cart)
+    //  const {isOpen} = useSelector((state:any) => state.cart)
   const delayedSearchTerm  = useDelay(query, 500)
 
   const handleOpenCategoryMenu = (event:any) => {
