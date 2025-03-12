@@ -90,10 +90,6 @@ const Header = ({toggleDrawer}: any) => {
   }
 };
 
-   console.log("query", query)
-   console.log("delayedTerm", delayedSearchTerm)
-   console.log("isOpen", isOpen)
-
 
   const handleChange = (e:any) => {
      e.preventDefault()

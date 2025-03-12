@@ -5,7 +5,7 @@ const AuthLayout = () => {
   const user = localStorage.getItem("userData")
    if(user){
     return (
-      <Navigate to="/home" replace />
+      <Navigate to="/" replace />
     )
    }
 

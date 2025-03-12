@@ -8,12 +8,12 @@ import { useState } from "react";
 
 interface FormValues {
   email: string;
-  Password: string;
+  password: string;
 }
 
 interface FormErrors {
   email?: string;
-  Password?: string;
+  password?: string;
 }
 
 
@@ -36,7 +36,7 @@ const Login = () => {
           setOpen(true)
           setTimeout(() => {
             resetForm();
-            navigate('/Home', {replace: true});
+            navigate('/', {replace: true});
           }, 2000);
         } catch (error: any) {
           setErrorMessage(error?.response?.data.message);
@@ -87,7 +87,7 @@ const Login = () => {
             Sign in
           </Typography>
         <Formik
-         initialValues={{email : '',Password: ''}}
+         initialValues={{email : '',password: ''}}
          validate={(values: FormValues) => {
           const errors: FormErrors  = {}
            if(!values.email){
@@ -96,8 +96,8 @@ const Login = () => {
            else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)){
             errors.email = "Inavlid email address"
            }
-           if(!values.Password){
-            errors.Password = "Required"
+           if(!values.password){
+            errors.password = "Required"
            }
            return errors;
          }}
@@ -130,16 +130,16 @@ const Login = () => {
                     variant="outlined" />
                   <FormLabel htmlFor="Password">Password</FormLabel>
                   <TextField
-                   error={touched.Password && Boolean(errors.Password)}
-                  value={values.Password}
+                   error={touched.password && Boolean(errors.password)}
+                  value={values.password}
                   onBlur={handleBlur}
                   onChange={handleChange}
                     fullWidth
                     type="Password"
-                    name="Password"
+                    name="password"
                     placeholder="Password"
                     autoComplete="Password"
-                     helperText={touched.Password && errors.Password}
+                     helperText={touched.password && errors.password}
                     variant="outlined" />
                 </FormControl>
                 <FormControlLabel control={<Checkbox value="remember" color="primary" />}
