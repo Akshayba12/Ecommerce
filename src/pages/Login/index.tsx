@@ -1,0 +1,189 @@
+import { Alert, Box, Button, Checkbox, CircularProgress, Container, Divider, FormControl, FormControlLabel, FormLabel, Paper, Snackbar, TextField, Typography } from "@mui/material"
+import { Formik, replace } from "formik";
+import { Link, useNavigate } from "react-router-dom";
+import { FacebookIcon, GoogleIcon } from "../../components/CustomIcons/CustomIcons";
+import axiosInstance from "../../services/axiosinstance";
+import { useState } from "react";
+
+const Login = () => {
+
+  const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isError, setIsError] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+        try {
+          const res = await axiosInstance.post('/api/user/login', values)
+          const users = res.data.email
+
+          localStorage.setItem('userData', JSON.stringify(users))
+          setErrorMessage("logged in successfully")
+          setSubmitting(false)
+          setIsError(false)
+          setOpen(true)
+          setTimeout(() => {
+            resetForm();
+            navigate('/Home', {replace: true});
+          }, 2000);
+        } catch (error) {
+          setErrorMessage(error?.response?.data.message);
+          setSubmitting(false);
+          setIsError(true)
+          setOpen(true)
+        }
+  }
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  return (
+    <>
+      <Snackbar
+        anchorOrigin={{horizontal : "center", vertical: "top" }}
+        autoHideDuration={2000}
+        open={open}
+        onClose={handleClose}
+        message={errorMessage}
+      >
+        <Alert
+      onClose={handleClose}
+      severity={isError ? "error" : "success"}
+       variant="filled"
+       sx={{ width: '100%' }}
+  >
+    {errorMessage}
+  </Alert>
+      </Snackbar>
+    <Container sx={{
+       display:'flex',
+       alignItems:'center',
+       justifyContent:'center',
+       boxSizing: 'unset',
+       width:'100vw',
+       height:'100vh',
+       backgroundColor: '#f8f8f8'
+    }}>
+      <Paper elevation={4} sx={{backgroundColor:'#f0f2f5',padding:2}}>
+      <Typography
+            component="h1"
+            variant="h4"
+            textAlign="center"
+            sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+          >
+            Sign in
+          </Typography>
+        <Formik
+         initialValues={{email : '',Password: ''}}
+         validate={(values) => {
+          const errors = {}
+           if(!values.email){
+            errors.email = "Required"
+           }
+           else if(!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)){
+            errors.email = "Inavlid email address"
+           }
+           if(!values.Password){
+            errors.Password = "Required"
+           }
+           return errors;
+         }}
+         onSubmit={(values, { setSubmitting, resetForm }) => handleSubmit(values, { setSubmitting, resetForm })}>{
+          ({isSubmitting, handleChange, values, touched, errors, handleBlur, handleSubmit}) =>{
+            return(
+              <><Box
+                component="form"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  width: '100%',
+                  gap: 2,
+                }}
+                 onSubmit={handleSubmit}
+                >
+                <FormControl sx={{ display: 'flex', justifyContent: 'start', alignItems: 'start' }}>
+                  <FormLabel htmlFor="email">Email</FormLabel>
+                  <TextField
+                   error={touched.email && Boolean(errors.email)}
+                    value={values.email}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    fullWidth
+                    type="email"
+                    name="email"
+                    placeholder="your@email.com"
+                    autoComplete="email"
+                     helperText={touched.email && errors.email}
+                    variant="outlined" />
+                  <FormLabel htmlFor="Password">Password</FormLabel>
+                  <TextField
+                   error={touched.Password && Boolean(errors.Password)}
+                  value={values.Password}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                    fullWidth
+                    type="Password"
+                    name="Password"
+                    placeholder="Password"
+                    autoComplete="Password"
+                     helperText={touched.Password && errors.Password}
+                    variant="outlined" />
+                </FormControl>
+                <FormControlLabel control={<Checkbox value="remember" color="primary" />}
+                  label="Remember me" />
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                >{isSubmitting ? <CircularProgress size={24} /> : 'Sign in'}</Button>
+                <Link
+                  component="button"
+                  type="button"
+                  variant="body2">
+                    <Typography textAlign="center">
+                  Forgot your password?
+                    </Typography>
+                </Link>
+              </Box><Divider>or</Divider><Box>
+                  <Button
+                    sx={{marginBottom:2}}
+                    fullWidth
+                    variant="outlined"
+                     startIcon={<GoogleIcon />}
+                    >
+                    Sign in with Google
+                  </Button>
+                  <Button
+                    fullWidth
+                    variant="outlined"
+                     startIcon={<FacebookIcon />}
+                    >
+                    Sign in with Facebook
+                  </Button>
+                  <Typography sx={{ textAlign: 'center', marginTop:1 }}>
+                    Don&apos;t have an account?{' '}
+                    <Link
+                      to="register"
+                      component="button"
+                      type="button"
+                      varient="body2"
+                    >
+                      Sign Up
+                    </Link>
+                  </Typography>
+                </Box></>
+            )
+          } 
+        }
+      
+       </Formik>
+      </Paper>
+    </Container>
+  </>
+  )
+}
+
+export default Login
