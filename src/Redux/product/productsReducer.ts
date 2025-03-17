@@ -8,7 +8,7 @@ interface ProductResponse {
 
 export const fetchAllProducts = createAsyncThunk('/products/fetchAllProducts', async(_, {rejectWithValue }) => {
     try{
-        const response = await axiosInstance.get('api/products')
+        const response = await axiosInstance.get('/.netlify/functions/server/products')
         console.log("response",response)
            return response?.data?.products[0].data
     } catch(error: any){

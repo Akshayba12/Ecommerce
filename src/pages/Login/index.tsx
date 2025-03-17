@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleSubmit = async (values: any, { setSubmitting, resetForm }: any) => {
         try {
-          const res = await axiosInstance.post('/api/user/login', values)
+          const res = await axiosInstance.post('/.netlify/functions/server/users/login', values)
           const users = res.data.email
 
           localStorage.setItem('userData', JSON.stringify(users))

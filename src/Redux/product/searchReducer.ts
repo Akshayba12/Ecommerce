@@ -6,7 +6,7 @@ export const searchProducts = createAsyncThunk(
     'products/searchProducts',
     async (searchTerm, { rejectWithValue }) => {
       try {
-        const response = await axiosInstance(`/api/products/search?name=${searchTerm}`);  // Search products
+        const response = await axiosInstance(`/.netlify/functions/server/products/search?name=${searchTerm}`);  // Search products
         return response.data.flat();  // Return search results
       } catch (error: any) {
         return rejectWithValue(error?.message || 'An error occurred while searching for products');
