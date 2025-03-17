@@ -17,7 +17,7 @@ const Details = () => {
 
     const GetProductById = async() => {
         try {
-         const res = await axiosInstance.get(`api/products/getProductById/${id}`)
+         const res = await axiosInstance.get(`/.netlify/functions/server/products/getProductById/${id}`)
          dispatch(setProduct(res?.data))
         } catch (error) {
          console.log("error", error)   
