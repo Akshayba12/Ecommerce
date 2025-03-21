@@ -56,57 +56,99 @@ const Home = () => {
 
 
   return (
-    <>
+    <div style={{width: '100vw', height: '100vh'}}>
     <SideDrawer open={open} toggleDrawer={toggleDrawer} setUser={setUser} />
     <Header toggleDrawer={toggleDrawer} />
     <Cart />
-    <div style={{ height: '500px', overflow: 'auto', margin: 12, padding: 10 }}>
-      {error ? 
-      <p>{error}</p> : <Grid container spacing={3} justifyContent="center">
-        {products?.map((x:any) => (
-          <Grid item xs={12} sm={6} md={5} lg={3} key={x.id}>
-            <Card onClick={() => handleNavigate(x.id)} sx={{ maxWidth: 300, borderRadius:5, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <CardActionArea>
-                <img
-                  height={250}
-                  width={250}
-                  style={{objectFit:'contain'}}
-                  src={x.thumbnail}
-                  alt={x.name}
-                />
-                <CardContent  sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '135px' }}>
-                  {/* Title */}
-                  <Typography gutterBottom variant="h6" component="div">
-                    {x.category}
-                  </Typography>
-                  {/* Description */}
-                  <Typography 
-                    variant="body2" 
-                    sx={{ height:'40px', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', color: 'text.secondary' }}
+    <div style={{ height: 'auto', overflow: 'auto', margin: 12, padding: 10 }}>
+      {error ? (
+        <div style={{ textAlign: 'center', padding: '50px 0', fontSize: '20px' }}>
+          <p>{error}</p>
+        </div>
+      ) : products?.length === 0 ? (
+        <div style={{ textAlign: 'center', padding: '50px 0', fontSize: '20px' }}>
+          <p>No products found</p>
+        </div>
+      ) : (
+        <Grid container spacing={3} justifyContent="center">
+          {products?.map((x: any) => (
+            <Grid item xs={12} sm={6} md={4} lg={3} key={x.id}>
+              <Card
+                onClick={() => handleNavigate(x.id)}
+                sx={{
+                  maxWidth: 300,
+                  borderRadius: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <CardActionArea>
+                  <img
+                    height={250}
+                    width={250}
+                    style={{ objectFit: 'contain' }}
+                    src={x.thumbnail}
+                    alt={x.name}
+                  />
+                  <CardContent
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      height: '135px',
+                    }}
                   >
-                    {x.description}
-                  </Typography>
-                  <Box sx={{display:'flex', flexDirection:'row', justifyContent:'space-between', alignItems:'center', height:20}}>
-                  <Rating
-                      name={`rating-${x.id}`}
-                      value={x.rating}
-                      precision={0.1}
-                      readOnly
-                      sx={{ marginTop: 1 }}
-                    />
-                  {/* Price */}
-                  <Typography variant="h6" sx={{ marginTop: 'auto' }}>
-                    ${x.price}
-                  </Typography>
-                  </Box>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>}
+                    {/* Title */}
+                    <Typography gutterBottom variant="h6" component="div">
+                      {x.category}
+                    </Typography>
+                    {/* Description */}
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        height: '40px',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        color: 'text.secondary',
+                      }}
+                    >
+                      {x.description}
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        height: 20,
+                      }}
+                    >
+                      <Rating
+                        name={`rating-${x.id}`}
+                        value={x.rating}
+                        precision={0.1}
+                        readOnly
+                        sx={{ marginTop: 1 }}
+                      />
+                      {/* Price */}
+                      <Typography variant="h6" sx={{ marginTop: 'auto' }}>
+                        ${x.price}
+                      </Typography>
+                    </Box>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </div>
-  </>
+  </div>
+  
   )
 }
 

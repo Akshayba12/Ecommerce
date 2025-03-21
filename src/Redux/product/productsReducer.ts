@@ -25,7 +25,7 @@ export const CatergoriesProducts = createAsyncThunk<
   async (prodcutcategory, { rejectWithValue }) => {
      localStorage.setItem("selectedCategory", prodcutcategory)
     try {
-      const response = await axiosInstance.get(`/api/products/categories/${prodcutcategory}`);
+      const response = await axiosInstance.get(`/.netlify/functions/server/products/categories/${prodcutcategory}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error?.message || 'An error occurred');
