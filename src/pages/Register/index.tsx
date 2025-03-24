@@ -74,13 +74,13 @@ const Register = () => {
            if(!values.Password){
             errors.Password = "Required"
            }
-           if(values.Password.length < 8){
+           if(values.Password && values.Password.length < 8){
             errors.Password = "Password must be at least 8 characters long"
            }
            return errors;
          }}
          onSubmit={(values, { setSubmitting, resetForm }) => {
-          axiosInstance.get('/getAllUser').then((val) =>{
+          axiosInstance.get('.netlify/functions/server/users/getAllUser').then((val) =>{
             const userExists = val.data.some((user: any) => user.email === values.email)
             if(userExists){
               setErrorMessage("email already exists")
@@ -90,7 +90,7 @@ const Register = () => {
           })
           console.log("Form values on submit: ", values);
           setSubmitting(false);
-          axiosInstance.post("/signup", {
+          axiosInstance.post(".netlify/functions/server/users/signup", {
             name: values.name,
             email: values.email,
             password: values.Password
@@ -100,12 +100,12 @@ const Register = () => {
                  resetForm()
               }, 2000)
               setOpen(true)
+              setIsError(false)
               setErrorMessage("user added successfully")
 
             }).catch((error) => {
               console.log(error)
             })
-          // Store form values in local storage on submit
       }}>{
           ({isSubmitting, handleChange, values, touched, errors, handleBlur, handleSubmit}) =>{
             return(
