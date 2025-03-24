@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOpen, SearchOff, ShoppingCart } from '@mui/icons-material';
 import { alpha, AppBar, Box, Button, Container, InputBase, Menu, MenuItem, styled, Toolbar, Typography } from '@mui/material'
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState } from 'react';
 import useDelay from '../../hooks/useDelay';
 import { CatergoriesProducts, setError, setProducts } from '../../Redux/product/productsReducer';
 import { useDispatch } from 'react-redux';
@@ -74,55 +74,55 @@ const Header = ({toggleDrawer}: any) => {
 )
      const dispatch = useDispatch<AppDispatch>() 
     //  const {isOpen} = useSelector((state:any) => state.cart)
-  const delayedSearchTerm  = useDelay(query, 500)
+  const delayedSearchTerm  = useDelay(query, 200)
+  const prevSearchTermRef = useRef<string>('');
 
   const handleOpenCategoryMenu = (event:any) => {
     setAnchorElCategory(event.currentTarget);
   };
 
-  const handleCloseCategoryMenu = (category:any) => {
-  setAnchorElCategory(null);
-
-  if (category && category.trim() !== '') {
-    dispatch(CatergoriesProducts(prodcutcategory[category]));
-  } else {
-    console.log("Invalid category selected");
-  }
-};
-
-
-  const handleChange = (e:any) => {
-     e.preventDefault()
-     setQuery(e.target.value)
-
-  }
-
-  const fetchProducts = async (searchTerm:any) =>{
-    try{
-      const response = await axiosInstance(`/api/products/search?name=${searchTerm}`)
-      console.log("response" , response)
-       if(response.status === 200){
-         dispatch(setProducts(response.data.flat()))
-         dispatch(setError(null))
-       }
-      } catch(err:any){
-        dispatch(setError(err.response.data?.message))
-      console.log("error" , err.response.data.message)
+  const handleCloseCategoryMenu = (category: string) => {
+    setAnchorElCategory(null)
+    if (category && category.trim() !== '') {
+      dispatch(CatergoriesProducts(prodcutcategory[category]));
+    } else {
+      console.log('Invalid category selected');
     }
-  }
+  };
+
+  const handleChange = (e: any) => {
+    setQuery(e.target.value);
+  };
+
+  // Fetch products based on search query
+  
+  const fetchProducts = async (searchTerm: string) => {
+    try {
+         const response = await axiosInstance.get(`/.netlify/functions/server/products/search?name=${searchTerm}`); 
+         if (response.status === 200) {
+           dispatch(setProducts(response.data.flat()));
+           dispatch(setError(null));
+         }
+    } catch (err: any) {
+      dispatch(setError(err.response.data?.message));
+      console.log('error', err.response.data.message);
+    }
+  };
+  useEffect(() => {
+    if (delayedSearchTerm !== prevSearchTermRef.current) {
+      prevSearchTermRef.current = delayedSearchTerm;
+      fetchProducts(delayedSearchTerm);
+    }
+  }, [delayedSearchTerm, dispatch]);
+ 
 
   const  handleDispatch = () =>{
     dispatch(setOpen(true))
   }
 
-  useEffect(() => {
-    if(delayedSearchTerm){
-      fetchProducts(delayedSearchTerm)
-    }
-  }, [delayedSearchTerm])
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box>
       <AppBar position="static" color='info'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
@@ -189,7 +189,7 @@ const Header = ({toggleDrawer}: any) => {
               >
                 {categories.map((category) => (
                   <MenuItem key={category} onClick={() => handleCloseCategoryMenu(category)}>
-                    <Typography sx={{ textAlign: 'center' }}>{category}</Typography>
+                    <Typography sx={{ textAlign: 'center', textTransform: 'capitalize' }}>{category}</Typography>
                   </MenuItem>
                 ))}
               </Menu>

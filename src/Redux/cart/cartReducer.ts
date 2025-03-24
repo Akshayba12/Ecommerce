@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSlice } from "@reduxjs/toolkit"
 
+const loadCartFromLocalStorage = () =>{
+ const savedCart = localStorage.getItem('cart')
+ return savedCart ? JSON.parse(savedCart) : []
+}
+
 const initialState = {
-    cart: [],
+    cart: loadCartFromLocalStorage(),
     isOpen: false
 }
 
@@ -21,12 +26,14 @@ const cartSlice = createSlice({
                 state.cart.push({...item, quantity : 1})
             }
           })
+          localStorage.setItem('cart', JSON.stringify(state.cart))
         },
         addQuantity: (state:any, action) => {
             const itemId = action.payload
             const index = state.cart.findIndex((item: any) => item.id === itemId)
             if(index >= 0){
                 state.cart[index].quantity += 1;
+                localStorage.setItem('cart', JSON.stringify(state.cart))
             }
         },
         removeQuantity: (state: any, action) => {
@@ -35,6 +42,7 @@ const cartSlice = createSlice({
       
             if (index >= 0 && state.cart[index].quantity > 1) {
               state.cart[index].quantity -= 1;
+              localStorage.setItem('cart', JSON.stringify(state.cart))
             }
           },
         setOpen: (state, action) => {
@@ -42,6 +50,7 @@ const cartSlice = createSlice({
         },
         removeItemFromCart: (state: any, action) => {
            state.cart = state.cart.filter((item: any) => item.id!==action.payload)
+           localStorage.setItem('cart', JSON.stringify(state.cart))
         }
     }
 })

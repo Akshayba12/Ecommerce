@@ -74,6 +74,9 @@ const Register = () => {
            if(!values.Password){
             errors.Password = "Required"
            }
+           if(values.Password.length < 8){
+            errors.Password = "Password must be at least 8 characters long"
+           }
            return errors;
          }}
          onSubmit={(values, { setSubmitting, resetForm }) => {
