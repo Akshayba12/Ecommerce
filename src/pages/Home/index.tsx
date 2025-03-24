@@ -56,7 +56,7 @@ const Home = () => {
 
 
   return (
-    <div style={{width: '100vw', height: '100vh'}}>
+    <div style={{ width: '100%', height: '100vh'}}>
     <SideDrawer open={open} toggleDrawer={toggleDrawer} setUser={setUser} />
     <Header toggleDrawer={toggleDrawer} />
     <Cart />
@@ -72,21 +72,23 @@ const Home = () => {
       ) : (
         <Grid container spacing={3} justifyContent="center">
           {products?.map((x: any) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={x.id}>
+            <Grid item xs={12} sm={6} md={4} lg={3} xl={2} key={x.id}>
               <Card
                 onClick={() => handleNavigate(x.id)}
-                sx={{
-                  maxWidth: 300,
+                sx={{ 
+                  maxWidth: '100%',
+                  width: '100%',
                   borderRadius: 5,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
+                  boxShadow: 3,  // Add shadow for better visual separation
                 }}
               >
                 <CardActionArea>
                   <img
                     height={250}
-                    width={250}
+                    width="100%" // Make the image responsive
                     style={{ objectFit: 'contain' }}
                     src={x.thumbnail}
                     alt={x.name}
@@ -96,7 +98,7 @@ const Home = () => {
                       display: 'flex',
                       flexDirection: 'column',
                       justifyContent: 'space-between',
-                      height: '135px',
+                      height: 'auto',  // Adjust to content
                     }}
                   >
                     {/* Title */}
@@ -147,7 +149,7 @@ const Home = () => {
         </Grid>
       )}
     </div>
-  </div>
+  </div>  
   
   )
 }
